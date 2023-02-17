@@ -1,0 +1,36 @@
+server:
+  port: 8050
+
+spring:
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    # 콘솔 http://localhost:8080/h2-console
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+  # 결과 출력 로그 막음
+  org.hibernate.type.descriptor.sql.BasicExtractor: INFO
+
+
