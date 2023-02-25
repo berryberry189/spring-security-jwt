@@ -25,7 +25,7 @@ public class SignupMemberRequest {
 
   @NotBlank(message = "이름을 입력해주세요")
   @Size(min = 2, max = 10, message = "이름은 2글자 이상, 10글자 이하로 입력해주세요.")
-  @ApiModelProperty(value = "이름", required = true, example = "김유저")
+  @ApiModelProperty(value = "이름", required = true, example = "김")
   private String name;
 
   public SignupMemberRequest(@NotBlank String userId, @NotBlank String password, @NotBlank String name) {
