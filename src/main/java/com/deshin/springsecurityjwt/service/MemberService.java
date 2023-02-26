@@ -33,7 +33,7 @@ public class MemberService {
   public MemberResponse signup(SignupMemberRequest request) {
 
     memberRepository.findByUserId(request.getUserId())
-        .ifPresent(i -> {
+        .ifPresent(member -> {
           throw new IllegalArgumentException("이미 가입된 id 입니다.");
         });
 

@@ -1,8 +1,8 @@
 package com.deshin.springsecurityjwt.common.security.service;
 
+import com.deshin.springsecurityjwt.common.security.dto.UserDetailsResponse;
 import com.deshin.springsecurityjwt.domain.Member;
 import com.deshin.springsecurityjwt.repository.MemberRepository;
-import com.deshin.springsecurityjwt.common.security.dto.UserDetailsResponse;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     Optional<Member> memberOptional = memberRepository.findByUserId(userId);
     if(memberOptional.isPresent()) {
       Member member = memberOptional.get();
-      return new UserDetailsResponse(member.getUserId(), member.getPassword());
+      return new UserDetailsResponse(member.getUserId(), member.getPassword(), member.getRoleList());
     }
     return null;
   }

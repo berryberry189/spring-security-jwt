@@ -36,8 +36,14 @@ public class MemberController {
   }
 
   @ApiOperation(value = "로그인한 회원 정보 API")
-  @GetMapping("/me")
-  public ResponseEntity<MemberResponse> myInfo() {
+  @GetMapping("/user/me")
+  public ResponseEntity<MemberResponse> userMyInfo() {
+    return new ResponseEntity<>(memberService.getMyInfo(), HttpStatus.OK);
+  }
+
+  @ApiOperation(value = "로그인한 어드민 회원 정보 API")
+  @GetMapping("/admin/me")
+  public ResponseEntity<MemberResponse> adminMyInfo() {
     return new ResponseEntity<>(memberService.getMyInfo(), HttpStatus.OK);
   }
 

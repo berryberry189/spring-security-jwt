@@ -37,13 +37,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     }
 
     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-        new UsernamePasswordAuthenticationToken(userDetailsResponse.getUsername(), userDetailsResponse.getPassword());
+        new UsernamePasswordAuthenticationToken(userDetailsResponse.getUsername(), userDetailsResponse.getPassword(),userDetailsResponse.getAuthorities() );
 
     return usernamePasswordAuthenticationToken;
   }
 
   @Override
   public boolean supports(Class<?> authentication) {
+    // 매개변수 authentication 이 UsernamePasswordAuthenticationToken.class 와 동일한지 체크
     return authentication.isAssignableFrom(UsernamePasswordAuthenticationToken.class);
   }
 }

@@ -50,6 +50,10 @@ public class SecurityConfig {
       "/**/login"
   };
 
+
+  /**
+   * BCrypt 강력 해싱함수로 암호를 인코딩 한다
+   */
   @Bean
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
     return new BCryptPasswordEncoder();
@@ -67,6 +71,8 @@ public class SecurityConfig {
 
     http.authorizeRequests()
         .mvcMatchers(PERMIT_URL_ARRAY).permitAll()
+        .antMatchers("/**/user/**").hasRole("USER")
+        .antMatchers("/**/admin/**").hasRole("ADMIN")
         .anyRequest().authenticated()
         .and()
         .sessionManagement()

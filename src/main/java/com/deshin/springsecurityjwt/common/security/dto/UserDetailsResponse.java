@@ -1,7 +1,8 @@
 package com.deshin.springsecurityjwt.common.security.dto;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,10 +10,12 @@ public class UserDetailsResponse implements UserDetails {
 
   private String userId;
   private String password;
+  private List<String> roleList;
 
-  public UserDetailsResponse(String userId, String password) {
+  public UserDetailsResponse(String userId, String password, List<String> roleList) {
     this.userId = userId;
     this.password = password;
+    this.roleList = roleList;
   }
 
   @Override
@@ -32,7 +35,9 @@ public class UserDetailsResponse implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.emptyList();
+    Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+    roleList.forEach(role -> authorities.add(()->{ return role;}));
+    return authorities;
   }
 
   @Override

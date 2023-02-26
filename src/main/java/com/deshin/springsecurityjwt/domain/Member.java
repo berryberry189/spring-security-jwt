@@ -1,6 +1,9 @@
 package com.deshin.springsecurityjwt.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -37,6 +40,8 @@ public class Member {
   @Column(name = "name", columnDefinition = "varchar(30) comment '이름'", nullable = false)
   private String name;
 
+  @Column(name = "roles", columnDefinition = "varchar(200) comment '권하 목록'", nullable = false)
+  private String roles;
 
   @Column(name = "create_at", nullable = false, updatable = false, columnDefinition = "timestamp comment '가입일시'")
   @CreationTimestamp
@@ -44,10 +49,18 @@ public class Member {
 
 
   @Builder
-  public Member(String userId, String password, String name) {
+  public Member(String userId, String password, String name, String roles) {
     this.userId = userId;
     this.password = password;
     this.name = name;
+    this.roles = roles;
+  }
+
+  public List<String> getRoleList(){
+    if(this.roles.length() > 0){
+      return Arrays.asList(this.roles.split(","));
+    }
+    return new ArrayList<>();
   }
 
 }

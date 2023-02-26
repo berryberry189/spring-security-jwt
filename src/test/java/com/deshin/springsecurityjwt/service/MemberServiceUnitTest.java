@@ -40,7 +40,8 @@ class MemberServiceUnitTest {
     SignupMemberRequest request = getSignupMemberRequest();
     String encryptedPassword = bCryptPasswordEncoder.encode(request.getPassword());
 
-    doReturn(new Member(request.getUserId(), encryptedPassword, request.getName())).when(memberRepository)
+    doReturn(new Member(request.getUserId(), encryptedPassword, request.getName(), "ROLE_USER"))
+        .when(memberRepository)
         .save(any(Member.class));
 
     // when
