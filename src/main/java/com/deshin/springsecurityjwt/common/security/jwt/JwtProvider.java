@@ -1,27 +1,16 @@
 package com.deshin.springsecurityjwt.common.security.jwt;
 
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import javax.annotation.PostConstruct;
 import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
-import javax.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-
-  private final UserDetailsService userDetailsService;
 
   private String secretKey;
 
@@ -77,18 +66,6 @@ public class JwtProvider {
     return true;
   }
 
-  /**
-   * 토큰으로 Authentication 반환
-   *
-   * @param token
-   * @return
-   */
-  public Authentication getAuthentication(String token) {
-    String username = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-  }
-
 
   /**
    * 토큰으로 username 반환
@@ -98,19 +75,6 @@ public class JwtProvider {
    */
   public String getUsernameFromToken(String token) {
     return getClaimFromToken(token, Claims::getSubject);
-  }
-
-  public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-    final Claims claims = getAllClaimsFromToken(token);
-    return claimsResolver.apply(claims);
-  }
-
-  private Claims getAllClaimsFromToken(String token) {
-    try {
-      return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-    } catch (ExpiredJwtException e) {
-      return e.getClaims();
-    }
   }
 
   /**
@@ -126,6 +90,19 @@ public class JwtProvider {
 
   public Date getExpirationDateFromToken(String token) {
     return getClaimFromToken(token, Claims::getExpiration);
+  }
+
+  public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+    final Claims claims = getAllClaimsFromToken(token);
+    return claimsResolver.apply(claims);
+  }
+
+  private Claims getAllClaimsFromToken(String token) {
+    try {
+      return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    } catch (ExpiredJwtException e) {
+      return e.getClaims();
+    }
   }
 
 
