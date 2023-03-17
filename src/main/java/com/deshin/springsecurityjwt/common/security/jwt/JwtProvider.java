@@ -2,12 +2,14 @@ package com.deshin.springsecurityjwt.common.security.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
@@ -55,11 +57,11 @@ public class JwtProvider {
     try {
       getAllClaimsFromToken(jwtToken);
     } catch (IllegalArgumentException e) {
-      System.out.println("an error occured during getting username from token");
+      log.error("an error occured during getting username from token");
       e.printStackTrace();
       return false;
     } catch(SignatureException e){
-      System.out.println("Authentication Failed. Username or Password not valid.");
+      log.error("Authentication Failed. Username or Password not valid.");
       e.printStackTrace();
       return false;
     }
